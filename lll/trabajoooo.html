@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Empresa de Ropa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+<style>
+    :root {
+        --color-principal: #1d3557;
+        --color-secundario: #e63946;
+        --color-fondo: #f1faee;
+        --color-texto: #1d3557;
+        --color-claro: #ffffff;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--color-fondo);
+        color: var(--color-texto);
+        line-height: 1.6;
+    }
+
+    header {
+        background: var(--color-principal);
+        color: var(--color-claro);
+        padding: 2rem 0;
+        text-align: center;
+    }
+
+    header h1 {
+        font-size: 3rem;
+        letter-spacing: 2px;
+    }
+
+    nav {
+        margin-top: 1.5rem;
+    }
+
+    nav a {
+        color: var(--color-claro);
+        margin: 0 1.5rem;
+        text-decoration: none;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    nav a:hover {
+        color: var(--color-secundario);
+        border-bottom: 2px solid var(--color-secundario);
+    }
+
+    section {
+        padding: 6rem 2rem;
+        text-align: center;
+    }
+
+    #productos {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2.5rem;
+        margin-top: 3rem;
+    }
+
+    .producto {
+        background: var(--color-claro);
+        border-radius: 1rem;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .producto:hover {
+        transform: scale(1.05);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .producto img {
+        width: 276px; /* Ancho fijo de 476px */
+        height: 367px; /* Altura fija de 567px */
+        object-fit: cover;
+    }
+
+    .producto p {
+        padding: 1.5rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .producto .precio {
+        font-size: 1.5rem;
+        color: var(--color-secundario);
+        font-weight: 700;
+        margin: 1rem 0;
+    }
+
+    .producto button {
+        background-color: var(--color-secundario);
+        color: var(--color-claro);
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 999px;
+        margin: 1rem;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+    .producto button:hover {
+        background-color: #d00000;
+    }
+
+    .carrito {
+        margin-top: 3rem;
+        max-width: 700px;
+        margin-inline: auto;
+        text-align: left;
+    }
+
+    #lista-carrito li {
+        padding: 1rem 0;
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+
+    .pago {
+        text-align: center;
+        margin-top: 3rem;
+    }
+
+    .pago button {
+        background-color: #10b981;
+        color: white;
+        padding: 1.2rem 2.5rem;
+        border: none;
+        border-radius: 999px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .pago button:hover {
+        background-color: #047857;
+    }
+
+    form {
+        max-width: 600px;
+        margin: auto;
+    }
+
+    form input, form textarea {
+        width: 100%;
+        padding: 1.2rem;
+        margin: 0.8rem 0;
+        border: 1px solid #cbd5e1;
+        border-radius: 0.8rem;
+        font-size: 1rem;
+    }
+
+    form input[type="submit"] {
+        background-color: var(--color-principal);
+        color: var(--color-claro);
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: background-color 0.3s ease;
+    }
+
+    form input[type="submit"]:hover {
+        background-color: var(--color-secundario);
+    }
+
+    footer {
+        background-color: var(--color-principal);
+        color: var(--color-claro);
+        text-align: center;
+        padding: 2rem;
+        margin-top: 4rem;
+        font-size: 1rem;
+    }
+
+    #ver-carrito {
+        background-color: #10b981;
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 999px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    #ver-carrito:hover {
+        background-color: #047857;
+    }
+
+    .conocenos img {
+        width: 300px;
+        height: 200px;
+        object-fit: cover;
+        margin: 1rem;
+    }
+</style>
+
+</head>
+<body>
+    <header>
+        <h1>Moda Única</h1>
+        <nav>
+            <a href="#inicio">Inicio</a>
+            <a href="#productos">Productos</a>
+            <a href="#conocenos">Conócenos</a>
+            <a href="#contacto">Contacto</a>
+        </nav>
+    </header>
+
+   <section id="introduccion" class="introduccion">
+        <h2>Introducción</h2>
+        <p>La moda es más que ropa; es una forma de expresión personal, una manera de contar quiénes somos sin decir una palabra. En un mundo donde las tendencias cambian rápidamente, buscamos algo más que simples prendas: queremos piezas que nos representen, que hablen de nuestra identidad y que sean únicas.</p>
+        <p>Este proyecto nace con la idea de ofrecer moda y accesorios personalizables, diseñados para quienes quieren diferenciarse y dejar su huella. Nos enfocamos en que cada prenda no solo sea un producto, sino una obra de arte que transmita una historia. Combinamos creatividad, calidad y autenticidad, adaptando cada pieza a los gustos y necesidades de cada persona.</p>
+        <p>Creemos que cada detalle cuenta, desde un estampado hasta un bordado especial, y por eso brindamos la posibilidad de adaptar cada prenda o accesorio para que quien lo use se sienta único. En ZEMEVI Couture, cada colección es un homenaje a las civilizaciones pasadas y una visión hacia el futuro de la moda.</p>
+    </section>
+
+    <section id="productos">
+        <h2>Nuestros Productos</h2>
+        <div class="productos">
+            <div class="producto">
+                <img src="carajo.jpg" alt="Conjunto 1" />
+                <p>Conjunto 1</p>
+                <p class="precio">$199.99</p>
+                <button onclick="agregarAlCarrito('traje', 199.99)">Agregar al carrito</button>
+            </div>
+            <div class="producto">
+                <img src="como.jpg" alt="Conjunto 2" />
+                <p>Conjunto 2</p>
+                <p class="precio">$249.99</p>
+                <button onclick="agregarAlCarrito('Conjunto de verano', 249.99)">Agregar al carrito</button>
+            </div>
+            <div class="producto">
+                <img src="go.jpg" alt="Conjunto 3" />
+                <p>Conjunto 3</p>
+                <p class="precio">$299.99</p>
+                <button onclick="agregarAlCarrito('traje blanco', 299.99)">Agregar al carrito</button>
+            </div>
+            <div class="producto">
+                <img src="siu.jpg" alt="Conjunto 4" />
+                <p>Conjunto 4</p>
+                <p class="precio">$179.99</p>
+                <button onclick="agregarAlCarrito('ropa de verano', 179.99)">Agregar al carrito</button>
+            </div>
+            <div class="producto">
+                <img src="pipi.jpg" alt="Conjunto 5" />
+                <p>Conjunto 5</p>
+                <p class="precio">$229.99</p>
+                <button onclick="agregarAlCarrito('traje de coleccion ', 229.99)">Agregar al carrito</button>
+            </div>
+            <div class="producto">
+                <img src="popo.jpg" alt="Conjunto 6" />
+                <p>Conjunto 6</p>
+                <p class="precio">$189.99</p>
+                <button onclick="agregarAlCarrito('conjunto de primavera', 189.99)">Agregar al carrito</button>
+            </div>
+        </div>
+
+        <div class="carrito">
+
+            <ul id="lista-carrito"></ul>
+            <button id="ver-carrito" onclick="verCarrito()">
+                <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Carrito" width="20" height="20">
+                Ver Carrito
+            </button>
+        </div>
+
+    </section>
+
+  <section id="conocenos" class="conocenos">
+        <h2>Conócenos</h2>
+        <p>ZEMEVI Couture es una marca de lujo que fusiona lo mejor de las técnicas artesanales ancestrales con la tecnología moderna. Cada pieza que diseñamos no solo busca destacar por su estética, sino también por su significado, creando una conexión emocional con quien la lleva. Nuestra misión es ofrecer piezas exclusivas que combinen historia, arte y vanguardia, con un enfoque en la sostenibilidad y la innovación.</p>
+        <img src="meme.jpg" alt="Imagen 1">
+        <img src="mimi.jpg" alt="Imagen 2">
+        <p>Nos especializamos en ropa y accesorios personalizables, pensados para aquellos que buscan piezas únicas que no solo se vean bien, sino que cuenten una historia. Desde técnicas ancestrales como el bordado y el tejido a mano, hasta la integración de tecnología de vanguardia como NFTs y tejidos inteligentes, ZEMEVI Couture está a la vanguardia de la moda moderna.</p>
+        <p>Nuestra visión es convertirnos en un referente mundial de la moda de lujo, con una identidad que respete la historia mientras proyecta el futuro. Nos proyectamos como una casa de moda con presencia global, desde boutiques exclusivas hasta un e-commerce que ofrezca experiencias premium a nuestros clientes. En ZEMEVI Couture, cada prenda no es solo un objeto de lujo, sino una forma de expresión atemporal.</p>
+    </section>
+
+    <section id="contacto">
+        <h2>Contacto</h2>
+        <p>¿Tienes preguntas o sugerencias? Escríbenos:</p>
+        <form action="mailto:contacto@modaunica.com" method="post" enctype="text/plain">
+            <input type="email" name="email" placeholder="Tu correo" required />
+            <textarea name="mensaje" rows="4" placeholder="Escribe tu mensaje aquí..." required></textarea>
+            <input type="submit" value="Enviar" />
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Moda Única. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        const listaCarrito = document.getElementById("lista-carrito");
+        let productosCarrito = JSON.parse(localStorage.getItem('productosCarrito')) || [];
+
+        function agregarAlCarrito(nombre, precio) {
+            productosCarrito.push({ nombre, precio });
+            localStorage.setItem('productosCarrito', JSON.stringify(productosCarrito));
+            alert(`${nombre} ha sido agregado al carrito.`);
+        }
+
+        function verCarrito() {
+            window.location.href = "nano.html";
+        }
+    </script>
+</body>
+</html>

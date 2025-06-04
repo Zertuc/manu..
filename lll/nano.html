@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carrito de Compras - Moda Única</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-principal: #1d3557;
+            --color-secundario: #e63946;
+            --color-fondo: #f1faee;
+            --color-texto: #1d3557;
+            --color-claro: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--color-principal);
+            color: var(--color-claro);
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            margin-top: 1.5rem;
+        }
+
+        nav a {
+            color: var(--color-claro);
+            margin: 0 1.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        nav a:hover {
+            color: var(--color-secundario);
+            border-bottom: 2px solid var(--color-secundario);
+        }
+
+        section {
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .carrito-contenedor {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            gap: 3rem;
+        }
+
+        .productos-carrito {
+            width: 60%;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .productos-carrito h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .producto-carrito-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .producto-carrito-item:last-child {
+            border-bottom: none;
+        }
+
+        .producto-carrito-item p {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .producto-carrito-item span {
+            font-size: 1rem;
+            color: #888;
+        }
+
+        .producto-carrito-item button {
+            background-color: #e63946;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .producto-carrito-item button:hover {
+            background-color: #d00000;
+        }
+
+        .carrito-formulario {
+            width: 35%;
+            padding: 2rem;
+            background-color: #f7fafc;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .carrito-formulario h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .carrito-formulario input, .carrito-formulario select {
+            width: 100%;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid #e5e5e5;
+            border-radius: 0.5rem;
+        }
+
+        .carrito-formulario button {
+            background-color: #10b981;
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 999px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .carrito-formulario button:hover {
+            background-color: #047857;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Moda Única</h1>
+        <nav>
+            <a href="trabajoooo.html">Inicio</a>
+            <a href="trabajoooo.html#productos">Productos</a>
+            <a href="trabajoooo.html#conocenos">Conócenos</a>
+            <a href="trabajoooo.html#contacto">Contacto</a>
+        </nav>
+    </header>
+
+    <section id="carrito">
+        <h2>Carrito de Compras</h2>
+        <div class="carrito-contenedor">
+            <!-- Sección de Productos del Carrito -->
+            <div class="productos-carrito">
+                <h3>Productos en tu Carrito</h3>
+                <div id="lista-carrito-detalle">
+                    <!-- Los productos se agregarán aquí dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Sección del Formulario de Pago -->
+            <div class="carrito-formulario">
+                <h3>Detalles de Pago</h3>
+                <form action="procesar_pago" method="POST">
+                    <input type="text" name="nombre" placeholder="Nombre completo" required />
+                    <input type="email" name="email" placeholder="Correo electrónico" required />
+                    <input type="tel" name="telefono" placeholder="Teléfono" required />
+                    <select name="metodo_pago">
+                        <option value="tarjeta">Tarjeta de crédito/débito</option>
+                        <option value="paypal">PayPal</option>
+                    </select>
+                    <button type="submit">Completar Compra</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Moda Única. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Obtén los productos del carrito del almacenamiento local
+        const productosCarrito = JSON.parse(localStorage.getItem('productosCarrito')) || [];
+        const listaCarritoDetalle = document.getElementById("lista-carrito-detalle");
+
+        // Muestra los productos en el carrito
+        productosCarrito.forEach((producto, index) => {
+            const div = document.createElement("div");
+            div.className = "producto-carrito-item";
+            div.innerHTML = `
+                <p>${producto.nombre}</p>
+                <span>$${producto.precio}</span>
+                <button onclick="borrarProducto(${index})">Borrar</button>
+            `;
+            listaCarritoDetalle.appendChild(div);
+        });
+
+        // Función para borrar un producto del carrito
+        function borrarProducto(index) {
+            productosCarrito.splice(index, 1);
+            localStorage.setItem('productosCarrito', JSON.stringify(productosCarrito));
+            location.reload(); // Recarga la página para actualizar la lista de productos
+        }
+    </script>
+</body>
+</html>
